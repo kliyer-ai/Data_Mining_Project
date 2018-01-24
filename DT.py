@@ -34,20 +34,19 @@ X_frame = X.drop(["datetime","casual", "registered", "count", "atemp", "holiday"
 
 
 
-"""
+
 X = np.asarray(X_frame)
 y = np.asarray(y)
 
-regr = tree.DecisionTreeRegressor()
+regr = tree.DecisionTreeRegressor(max_depth=10)
 kf = KFold(n_splits=10, shuffle= True)
 for train, test in kf.split(X):
     X_train, X_test, y_train, y_test = X[train], X[test], y[train], y[test]    
     regr.fit(X_train, y_train)
     y_pred = regr.predict(X_test)
     
-    print "feature importance",regr.feature_importances_
-    print "score",regr.score(X_test, y_test)
+    #print "feature importance",regr.feature_importances_
+    #print "score",regr.score(X_test, y_test)
     print "mean squared error", mean_squared_error(y_test, y_pred)
     print "R²", r2_score(y_test, y_pred)
     
-"""
