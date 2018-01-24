@@ -25,7 +25,7 @@ y = X["count"]
 
 dates = X["datetime"]
 hours = [int(date.split()[1].split(":")[0]) for date in dates]
-weekday = [datetime.strptime(date.split()[0], "%Y-%m-%d").strftime('%w') for date in dates]
+weekday = [datetime.strptime(date.split()[0], "%Y-%m-%d").strftime('%A') for date in dates]
 month = [datetime.strptime(date.split()[0], "%Y-%m-%d").strftime('%m') for date in dates]
 
 X["hour"] = hours
@@ -39,9 +39,12 @@ wd = np.asarray(X["workingday"])
 count = np.asarray(X["count"])
 h = np.asarray(X["hour"])
 
-hourAggregated = pd.DataFrame(X.groupby(["hour","workingday"],sort=True)["count"].mean()).reset_index()
-sn.pointplot(x=hourAggregated["hour"], y=hourAggregated["count"],hue=hourAggregated["workingday"], data=hourAggregated, join=True)
+#hourAggregated = pd.DataFrame(X.groupby(["hour","workingday"],sort=True)["count"].mean()).reset_index()
+#sn.pointplot(x=hourAggregated["hour"], y=hourAggregated["count"],hue=hourAggregated["workingday"], data=hourAggregated, join=True)
 
+hueOrder = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday", "Sunday"]
+hourAggregated = pd.DataFrame(X.groupby(["hour","weekday"],sort=True)["count"].mean()).reset_index()
+sn.pointplot(x=hourAggregated["hour"], y=hourAggregated["count"],hue=hourAggregated["weekday"],hue_order=hueOrder, data=hourAggregated, join=True)
 
 #hourAggregated = pd.DataFrame(X.groupby(["hour","holiday"],sort=True)["count"].mean()).reset_index()
 #sn.pointplot(x=hourAggregated["hour"], y=hourAggregated["count"],hue=hourAggregated["holiday"], data=hourAggregated, join=True)
